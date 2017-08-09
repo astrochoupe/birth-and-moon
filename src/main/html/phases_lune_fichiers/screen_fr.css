@@ -1,0 +1,111 @@
+/**
+ *	Screen_fr.css
+ *
+ *	Feuille de style liée à la langue française
+ */
+ 
+ /*@CHARSET "UTF-8";*/
+ @import url( 'global.css' );
+ @import url( 'screen.css' );
+
+ /******************************/
+/* PIED DE PAGE                       */
+/******************************/
+#piedpage #footer #footerLeft #haut a{
+   width:80px;
+   background: transparent url(../../langues/fr/public/images/top.gif) top left no-repeat;
+   color:#314563;
+}
+
+#piedpage #footer #footerLeft #print a{
+   width:70px;
+   background: transparent url(../../langues/fr/public/images/print.gif) top left no-repeat;
+   color:#314563;
+}
+
+#piedpage #footer #footerLeft #back a{
+   width:60px;
+   background: transparent url(../../langues/fr/public/images/back.gif) top left no-repeat;
+   color:#314563;
+}
+
+#piedpage #footer #footerLeft #close a{
+   width:60px;
+   background: transparent url(../../langues/fr/public/images/close.gif) top left no-repeat;
+   color:#314563;
+}
+
+#piedpage #footer #footerRight #copyright a{
+   width:170px;
+   background: transparent url(../../langues/fr/public/images/copyright.gif) top left no-repeat;
+   color:#314563;
+}
+
+/******************************/
+/* ACCUEIL                                */
+/******************************/
+#bandetextehaut{
+	position:inherit;
+	width:20px;
+	height:80%;
+	float:left;
+	background:transparent url(../images/site/accueiltextehaut.png) top left no-repeat;
+}
+
+#bandetextegauche{
+	position:inherit;
+	width:20px;
+	height:500px;
+	float:left;
+	background:transparent url(../images/site/accueiltextegauche.png) top left no-repeat;
+}
+
+#bandetextedroit{
+	position:inherit;
+	width:20px;
+	height:370px;
+	float:left;
+	background:transparent url(../images/site/accueiltextedroit.png) top left no-repeat;
+}
+
+#bandetextepubli{
+	position:inherit;
+	width:20px;
+	height:270px;
+	float:left;
+	background:transparent url(../images/site/accueiltextepubli.png) top left no-repeat;
+}
+
+
+ /******************************/
+/* SIDEBAR                                */
+/******************************/
+
+/* RECHERCHE ****************/
+#zone-recherche {
+	background: transparent url(../../langues/fr/public/images/zonerecherche.gif) top left no-repeat;
+}
+ 
+/* MENU **********************/
+#zone-menu {
+	background: transparent url(../../langues/fr/public/images/zonemenu.gif) top left no-repeat;
+}
+ 
+/* NOUVELLES ASTRO *********/
+#nouvellesastro_titre {
+	height: 20px;
+	background: url(../../langues/fr/public/images/nouvellesastro.png) top left no-repeat;
+}
+
+
+/************************************/
+/**** STYLE CHANGEANT ENTRE EN ET FR****/
+/******************************************/
+
+.ensavoirplusaccueil {
+	position:inherit;
+	padding: 0px 0px 0px 200px;
+	background:transparent url(../images/site/plus.gif) no-repeat right;
+	width:90px;
+	height:30px;
+}
