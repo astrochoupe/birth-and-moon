@@ -9,53 +9,60 @@ import java.util.Map;
 
 public class Main {
 
+    /** Moon age by date.
+     * Moon age is the number of days since the last New Moon.
+     * For example Full Moon is 14-15 days after New Moon.
+     */
     private static Map<LocalDate,Integer> moonAge;
 
+    /**
+     * Give the number of birth by moon age.
+     * @param args
+     */
     public static void main(String[] args) {
-        Map<Integer,Integer> birthByMoonAge = new HashMap<>();
-        // init result map
+        // initialize result map
+        Map<Integer,Integer> birthsByMoonAge = new HashMap<>();
         for(int i=0; i<=30; i++) {
-            birthByMoonAge.put(i, 0);
+            birthsByMoonAge.put(i, 0);
         }
 
-        InputStream is = Main.class.getClassLoader().getResourceAsStream("naissances.csv");
+        InputStream is = Main.class.getClassLoader().getResourceAsStream("births.csv");
 
         try (BufferedReader br = new BufferedReader(new InputStreamReader(is))){
+            // skip header line
+            br.readLine();
+
             String line;
-            int lineNumber = 0;
             while ((line = br.readLine()) != null) {
-                lineNumber++;
-                // avoid header line
-                if(lineNumber>1) {
-                    String nbBirthString = null;
-                    try {
-                        String[] parts = line.split(",");
-                        String dateIso = parts[0];
-                        nbBirthString = parts[1];
+                String nbBirthString = null;
+                try {
+                    String[] parts = line.split(",");
+                    String dateIso = parts[0];
+                    nbBirthString = parts[1];
 
-                        // conversion
-                        int nbBirthAtThisDate = Integer.valueOf(nbBirthString);
-                        LocalDate date = getDateFromIsoString(dateIso);
-                        Integer moonAge = getMoonAge(date);
+                    // conversion
+                    int nbBirthAtThisDate = Integer.valueOf(nbBirthString);
+                    LocalDate date = getDateFromIsoString(dateIso);
+                    Integer moonAge = getMoonAge(date);
 
-                        if(moonAge == null) {
-                            System.out.println("Moon age unknown for " + dateIso);
-                            continue;
-                        }
-
-                        int nbBirthAtMoonAge = birthByMoonAge.get(moonAge);
-                        birthByMoonAge.put(moonAge, nbBirthAtMoonAge + nbBirthAtThisDate);
-                    } catch (NumberFormatException e) {
-                        System.out.println("nbBirthString = '" + nbBirthString + "'");
-                        e.printStackTrace();
+                    if(moonAge == null) {
+                        System.out.println("Moon age unknown for " + dateIso);
+                        continue;
                     }
+
+                    int nbBirthAtMoonAge = birthsByMoonAge.get(moonAge);
+                    birthsByMoonAge.put(moonAge, nbBirthAtMoonAge + nbBirthAtThisDate);
+                } catch (NumberFormatException e) {
+                    System.out.println("nbBirthString = '" + nbBirthString + "'");
+                    e.printStackTrace();
                 }
+
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        showResult(birthByMoonAge);
+        showResult(birthsByMoonAge);
     }
 
     private static LocalDate getDateFromIsoString(String dateIso) {
@@ -78,7 +85,13 @@ public class Main {
     private static void initMoonAgeMap() {
         moonAge = new HashMap<>();
 
-        InputStream is = Main.class.getClassLoader().getResourceAsStream("phases_lune.csv");
+        InputStream is = Main.class.getClassLoader().getResourceAsStream("moon_phases.csv");
+
+        // note: phases are in french abbreviation
+        // NL = Nouvelle Lune (New Moon)
+        // PQ = Premier Quartier (First Quarter)
+        // PL = Pleine Lune (Full Moon)
+        // DQ = Dernier Quartier (Last Quarter)
 
         try (BufferedReader br = new BufferedReader(new InputStreamReader(is))){
             // skip header line
@@ -87,18 +100,18 @@ public class Main {
             String line;
             while ((line = br.readLine()) != null) {
                 String[] parts = line.split(",");
-                String date = parts[0];
+                String dateIso = parts[0];
                 String phase = parts[1];
 
                 // date conversion
-                LocalDate localDate = getDateFromIsoString(date);
+                LocalDate date = getDateFromIsoString(dateIso);
 
                 if(phase.equals("NL")) {
-                    moonAge.put(localDate, 0);
+                    moonAge.put(date, 0);
 
                     for(int age=1; age<=30; age++) {
-                        LocalDate localDate2 = localDate.plus(age, ChronoUnit.DAYS);
-                        moonAge.put(localDate2, age);
+                        LocalDate date2 = date.plus(age, ChronoUnit.DAYS);
+                        moonAge.put(date2, age);
                     }
                 }
             }
