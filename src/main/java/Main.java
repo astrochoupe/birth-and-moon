@@ -9,21 +9,21 @@ import java.util.Map;
 
 public class Main {
 
-    /** Moon age by date.
-     * Moon age is the number of days since the last New Moon.
+    /** Moon's age by date.
+     * Moon's age is the number of days since the last New Moon.
      * For example Full Moon is 14-15 days after New Moon.
      */
-    private static Map<LocalDate,Integer> moonAge;
+    private static Map<LocalDate,Integer> moonsAge;
 
     /**
-     * Give the number of birth by moon age.
+     * Give the number of birth by moon's age.
      * @param args
      */
     public static void main(String[] args) {
         // initialize result map
-        Map<Integer,Integer> birthsByMoonAge = new HashMap<>();
+        Map<Integer,Integer> birthsByMoonsAge = new HashMap<>();
         for(int i=0; i<=30; i++) {
-            birthsByMoonAge.put(i, 0);
+            birthsByMoonsAge.put(i, 0);
         }
 
         InputStream is = Main.class.getClassLoader().getResourceAsStream("births.csv");
@@ -43,15 +43,15 @@ public class Main {
                     // conversion
                     int nbBirthAtThisDate = Integer.valueOf(nbBirthString);
                     LocalDate date = getDateFromIsoString(dateIso);
-                    Integer moonAge = getMoonAge(date);
+                    Integer moonsAge = getMoonsAge(date);
 
-                    if(moonAge == null) {
-                        System.out.println("Moon age unknown for " + dateIso);
+                    if(moonsAge == null) {
+                        System.out.println("Moon's age unknown for " + dateIso);
                         continue;
                     }
 
-                    int nbBirthAtMoonAge = birthsByMoonAge.get(moonAge);
-                    birthsByMoonAge.put(moonAge, nbBirthAtMoonAge + nbBirthAtThisDate);
+                    int nbBirthAtMoonsAge = birthsByMoonsAge.get(moonsAge);
+                    birthsByMoonsAge.put(moonsAge, nbBirthAtMoonsAge + nbBirthAtThisDate);
                 } catch (NumberFormatException e) {
                     System.out.println("nbBirthString = '" + nbBirthString + "'");
                     e.printStackTrace();
@@ -62,7 +62,7 @@ public class Main {
             e.printStackTrace();
         }
 
-        showResult(birthsByMoonAge);
+        showResult(birthsByMoonsAge);
     }
 
     private static LocalDate getDateFromIsoString(String dateIso) {
@@ -74,16 +74,16 @@ public class Main {
         return LocalDate.of(year, month, day);
     }
 
-    private static Integer getMoonAge(LocalDate date) {
-        if(moonAge == null) {
-            initMoonAgeMap();
+    private static Integer getMoonsAge(LocalDate date) {
+        if(moonsAge == null) {
+            initMoonsAgeMap();
         }
 
-        return moonAge.get(date);
+        return moonsAge.get(date);
     }
 
-    private static void initMoonAgeMap() {
-        moonAge = new HashMap<>();
+    private static void initMoonsAgeMap() {
+        moonsAge = new HashMap<>();
 
         InputStream is = Main.class.getClassLoader().getResourceAsStream("moon_phases.csv");
 
@@ -107,11 +107,11 @@ public class Main {
                 LocalDate date = getDateFromIsoString(dateIso);
 
                 if(phase.equals("NL")) {
-                    moonAge.put(date, 0);
+                    moonsAge.put(date, 0);
 
                     for(int age=1; age<=30; age++) {
                         LocalDate date2 = date.plus(age, ChronoUnit.DAYS);
-                        moonAge.put(date2, age);
+                        moonsAge.put(date2, age);
                     }
                 }
             }
@@ -120,10 +120,10 @@ public class Main {
         }
     }
 
-    private static void showResult(Map<Integer,Integer> birthByMoonAge) {
-        System.out.println("Moon age,Births");
+    private static void showResult(Map<Integer,Integer> birthByMoonsAge) {
+        System.out.println("Moon's age,Births");
 
-        for (Map.Entry<Integer,Integer> pair : birthByMoonAge.entrySet()){
+        for (Map.Entry<Integer,Integer> pair : birthByMoonsAge.entrySet()){
             System.out.println(pair.getKey() + "," + pair.getValue());
         }
     }

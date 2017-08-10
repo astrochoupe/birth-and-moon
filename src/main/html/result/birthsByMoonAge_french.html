@@ -1,19 +1,20 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Births by moon's age</title>
+	<meta charset="UTF-8">
+	<title>Naissances par âge de la Lune</title>
 	<link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/dygraph/2.0.0/dygraph.min.css" />
 	<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/dygraph/2.0.0/dygraph.min.js"></script>
 	<style type="text/css">
 
-		#graphdiv {
-			margin: 20px;
-		}
+        #graphdiv {
+            margin: 20px;
+        }
 
-		.dygraph-ylabel {
-			position: relative;
-			bottom: 12px;
-		}
+        .dygraph-ylabel {
+            position: relative;
+            bottom: 12px;
+        }
 
 	</style>
 </head>
@@ -24,9 +25,9 @@
 		document.getElementById("graphdiv"),
 		"birthsByMoonAge.csv",
 		{
-			title: "Births by moon's age",
-			xlabel: "moon's age (days)",
-			ylabel: "number of births",
+			title: "Naissances par âge de la Lune",
+			xlabel: "Âge de la Lune (jours)",
+			ylabel: "Nombre de naissances",
 			width: 640,
 			height: 480
 		}
@@ -38,32 +39,32 @@
 			  {
 				  series: "Births",
 				  x: "0",
-				  shortText: "NM",
-                  text: "New Moon",
+				  shortText: "NL",
+                  text: "Nouvelle Lune",
                   width: 24
 			  },{
                   series: "Births",
                   x: "7",
-                  shortText: "FQ",
-                  text: "First Quarter",
+                  shortText: "PQ",
+                  text: "Premier Quartier",
                   width: 24
               },{
                   series: "Births",
                   x: "15",
-                  shortText: "FM",
-                  text: "Full Moon",
+                  shortText: "PL",
+                  text: "Pleine Lune",
                   width: 24
               },{
                   series: "Births",
                   x: "22",
-                  shortText: "LQ",
-                  text: "Last Quarter",
+                  shortText: "DQ",
+                  text: "Dernier Quartier",
                   width: 24
               }
 		  ]);
 	  });
 	</script>
 
-	<p>Moon's age = days past new moon</p>
+    <p>Âge de la Lune = nombre de jours écoulés depuis la dernière nouvelle lune</p>
 </body>
 </html>
