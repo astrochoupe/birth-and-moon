@@ -26,7 +26,7 @@ public class Main {
             birthsByMoonsAge.put(i, 0);
         }
 
-        InputStream is = Main.class.getClassLoader().getResourceAsStream("births.csv");
+        InputStream is = Main.class.getClassLoader().getResourceAsStream("births2.csv");
 
         try (BufferedReader br = new BufferedReader(new InputStreamReader(is))){
             // skip header line
