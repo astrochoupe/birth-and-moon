@@ -26,7 +26,7 @@ public class Main {
             birthsByMoonsAge.put(i, 0);
         }
 
-        InputStream is = Main.class.getClassLoader().getResourceAsStream("births2.csv");
+        InputStream is = Main.class.getClassLoader().getResourceAsStream("birthsByDate.csv");
 
         try (BufferedReader br = new BufferedReader(new InputStreamReader(is))){
             // skip header line
@@ -85,7 +85,7 @@ public class Main {
     private static void initMoonsAgeMap() {
         moonsAge = new HashMap<>();
 
-        InputStream is = Main.class.getClassLoader().getResourceAsStream("moon_phases.csv");
+        InputStream is = Main.class.getClassLoader().getResourceAsStream("moonPhases.csv");
 
         // note: phases are in french abbreviation
         // NL = Nouvelle Lune (New Moon)

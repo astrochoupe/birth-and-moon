@@ -16,7 +16,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 public class XlsInseeToCsv {
 
 	private static final String EXCEL_FILENAME = "T79JNAIS.xls";
-	private static final String CSV_FILENAME = "births2.csv";
+	private static final String CSV_FILENAME = "birthsByDate.csv";
 
 	private static final int MIN_ROW = 5;
 	private static final int MAX_ROW = 593;
