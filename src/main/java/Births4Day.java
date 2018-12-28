@@ -2,7 +2,7 @@ import java.time.LocalDate;
 
 
 
-public class DateOfBirth {
+public class Births4Day {
 	private LocalDate date;
 	private Integer numberOfBirths;
 	
