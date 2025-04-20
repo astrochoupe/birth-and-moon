@@ -3,7 +3,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -15,11 +15,11 @@ import org.apache.poi.ss.usermodel.Workbook;
  */
 public class XlsInseeToCsv {
 
-	private static final String EXCEL_FILENAME = "T79JNAIS.xls";
+	private static final String EXCEL_FILENAME = "T79JNAIS.xlsx";
 	private static final String CSV_FILENAME = "birthsByDate.csv";
 
 	private static final int MIN_ROW = 5;
-	private static final int MAX_ROW = 593;
+	private static final int MAX_ROW = 629;
 	private static final int MIN_COL = 3;
 	private static final int MAX_COL = 34;
 	private static final int DAY_ROW = 3;
@@ -37,7 +37,7 @@ public class XlsInseeToCsv {
 		InputStream is = Main.class.getClassLoader().getResourceAsStream(
 				EXCEL_FILENAME);
 
-		try (Workbook workbook = new HSSFWorkbook(is);
+		try (Workbook workbook = new XSSFWorkbook(is);
 				FileWriter fileWriter = new FileWriter(CSV_FILENAME);
 				PrintWriter printWriter = new PrintWriter(fileWriter);) {
 
