@@ -8,22 +8,23 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Main {
-
-    /** Moon's age by date.
-     * Moon's age is the number of days since the last New Moon.
-     * For example Full Moon is 14-15 days after New Moon.
+    
+    /** Number of days from Full moon by date.
      */
-    private static Map<LocalDate,Integer> moonsAge;
+    private static Map<LocalDate,Integer> daysFromFullMoonForADate;
+    
+    private static int MIN_DAY_FROM_FULL_MOON = -15;
+    private static int MAX_DAY_FROM_FULL_MOON = 15;
 
     /**
-     * Give the number of birth by moon's age.
+     * Give the number of births by days from Full moon.
      * @param args
      */
     public static void main(String[] args) {
         // initialize result map
-        Map<Integer,Integer> birthsByMoonsAge = new HashMap<>();
-        for(int i=0; i<=30; i++) {
-            birthsByMoonsAge.put(i, 0);
+        Map<Integer,Integer> birthsByDayFromFullMoon = new HashMap<>();
+        for(int day=MIN_DAY_FROM_FULL_MOON; day<=MAX_DAY_FROM_FULL_MOON; day++) {
+            birthsByDayFromFullMoon.put(day, 0);
         }
 
         InputStream is = Main.class.getClassLoader().getResourceAsStream("birthsByDate.csv");
@@ -43,15 +44,15 @@ public class Main {
                     // conversion
                     int nbBirthAtThisDate = Integer.valueOf(nbBirthString);
                     LocalDate date = getDateFromIsoString(dateIso);
-                    Integer moonsAge = getMoonsAge(date);
+                    Integer daysFromFullMoon = getDaysFromFullMoon(date);
 
-                    if(moonsAge == null) {
-                        System.out.println("Moon's age unknown for " + dateIso);
+                    if(daysFromFullMoon == null) {
+                        System.out.println("Days from Full moon unknown for " + dateIso);
                         continue;
                     }
 
-                    int nbBirthAtMoonsAge = birthsByMoonsAge.get(moonsAge);
-                    birthsByMoonsAge.put(moonsAge, nbBirthAtMoonsAge + nbBirthAtThisDate);
+                    int nbBirthForDaysFromFullMoon = birthsByDayFromFullMoon.get(daysFromFullMoon);
+                    birthsByDayFromFullMoon.put(daysFromFullMoon, nbBirthForDaysFromFullMoon + nbBirthAtThisDate);
                 } catch (NumberFormatException e) {
                     System.out.println("nbBirthString = '" + nbBirthString + "'");
                     e.printStackTrace();
@@ -62,7 +63,7 @@ public class Main {
             e.printStackTrace();
         }
 
-        showResult(birthsByMoonsAge);
+        showResult(birthsByDayFromFullMoon);
     }
 
     private static LocalDate getDateFromIsoString(String dateIso) {
@@ -73,17 +74,17 @@ public class Main {
 
         return LocalDate.of(year, month, day);
     }
-
-    private static Integer getMoonsAge(LocalDate date) {
-        if(moonsAge == null) {
-            initMoonsAgeMap();
+    
+    private static Integer getDaysFromFullMoon(LocalDate date) {
+        if(daysFromFullMoonForADate == null) {
+        	initDaysFromFullMoon();
         }
 
-        return moonsAge.get(date);
+        return daysFromFullMoonForADate.get(date);
     }
 
-    private static void initMoonsAgeMap() {
-        moonsAge = new HashMap<>();
+    private static void initDaysFromFullMoon() {
+    	daysFromFullMoonForADate = new HashMap<>();
 
         InputStream is = Main.class.getClassLoader().getResourceAsStream("moonPhases.csv");
 
@@ -106,12 +107,10 @@ public class Main {
                 // date conversion
                 LocalDate date = getDateFromIsoString(dateIso);
 
-                if(phase.equals("NL")) {
-                    moonsAge.put(date, 0);
-
-                    for(int age=1; age<=30; age++) {
-                        LocalDate date2 = date.plus(age, ChronoUnit.DAYS);
-                        moonsAge.put(date2, age);
+                if(phase.equals("PL")) {
+                    for(int day=MIN_DAY_FROM_FULL_MOON; day<=MAX_DAY_FROM_FULL_MOON; day++) {
+                        LocalDate date2 = date.plus(day, ChronoUnit.DAYS);
+                        daysFromFullMoonForADate.put(date2, day);
                     }
                 }
             }
@@ -120,11 +119,12 @@ public class Main {
         }
     }
 
-    private static void showResult(Map<Integer,Integer> birthByMoonsAge) {
-        System.out.println("Moon's age,Births");
-
-        for (Map.Entry<Integer,Integer> pair : birthByMoonsAge.entrySet()){
-            System.out.println(pair.getKey() + "," + pair.getValue());
+    private static void showResult(Map<Integer,Integer> birthFromFullMoon) {
+        System.out.println("Days from Full moon,Births");
+        
+        for(int day=MIN_DAY_FROM_FULL_MOON; day<=MAX_DAY_FROM_FULL_MOON; day++) {
+        	Integer value = birthFromFullMoon.get(day);
+        	System.out.println(day + "," + value);
         }
     }
 }

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Births by days from Full moon</title>
+	<link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/dygraph/2.2.1/dygraph.min.css" />
+	<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/dygraph/2.2.1/dygraph.min.js"></script>
+	<style type="text/css">
+
+		#graphdiv {
+			position: absolute;
+			top: 50px;
+			left: 50px;
+		}
+
+	</style>
+</head>
+<body>
+	<div id="graphdiv"></div>
+	<script type="text/javascript">
+	  g = new Dygraph(
+		document.getElementById("graphdiv"),
+		"birthsByDaysFromFullMoon.csv",
+		{
+			title: "Births by days from Full moon",
+			xlabel: "days from full moon",
+			ylabel: "births",
+			width: 640,
+			height: 480
+		}
+	  );
+
+
+	  g.ready(function() {
+		  g.setAnnotations([
+			  {
+				  series: "Births",
+				  x: "-15",
+				  shortText: "NM",
+                  text: "New Moon",
+                  width: 24
+			  },{
+                  series: "Births",
+                  x: "-7",
+                  shortText: "FQ",
+                  text: "First Quarter",
+                  width: 24
+              },{
+                  series: "Births",
+                  x: "0",
+                  shortText: "FM",
+                  text: "Full Moon",
+                  width: 24
+              },{
+                  series: "Births",
+                  x: "7",
+                  shortText: "LQ",
+                  text: "Last Quarter",
+                  width: 24
+              }
+		  ]);
+	  });
+	</script>
+</body>
+</html>
