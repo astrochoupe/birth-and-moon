@@ -89,7 +89,7 @@ public class XlsInseeToCsv {
 		switch (frenchNameOfMonth) {
 		case "Janvier":
 			return "01";
-		case "Février":
+		case "FÃ©vrier":
 			return "02";
 		case "Mars":
 			return "03";
@@ -101,7 +101,7 @@ public class XlsInseeToCsv {
 			return "06";
 		case "Juillet":
 			return "07";
-		case "Août":
+		case "AoÃ»t":
 			return "08";
 		case "Septembre":
 			return "09";
@@ -109,7 +109,7 @@ public class XlsInseeToCsv {
 			return "10";
 		case "Novembre":
 			return "11";
-		case "Décembre":
+		case "DÃ©cembre":
 			return "12";
 		default:
 			return "ERROR";
