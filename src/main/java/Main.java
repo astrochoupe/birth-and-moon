@@ -2,6 +2,12 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
@@ -9,9 +15,11 @@ import java.util.Map;
 
 public class Main {
     
-    /** Number of days from Full moon by date.
-     */
+    /** Number of days from Full moon by date. */
     private static Map<LocalDate,Integer> daysFromFullMoonForADate;
+    
+	/** List of public holidays. */
+	private static Map<LocalDate, Boolean> publicHolidays;
     
     private static int MIN_DAY_FROM_FULL_MOON = -15;
     private static int MAX_DAY_FROM_FULL_MOON = 15;
@@ -19,12 +27,17 @@ public class Main {
     /**
      * Give the number of births by days from Full moon.
      * @param args
+     * @throws IOException 
+     * @throws URISyntaxException 
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws URISyntaxException, IOException {
+    	// initialize public holidays
+    	initializePublicHolidays();
+    	
         // initialize result map
-        Map<Integer,Integer> birthsByDayFromFullMoon = new HashMap<>();
+        Map<Integer,ResultObject> birthsByDayFromFullMoon = new HashMap<>();
         for(int day=MIN_DAY_FROM_FULL_MOON; day<=MAX_DAY_FROM_FULL_MOON; day++) {
-            birthsByDayFromFullMoon.put(day, 0);
+            birthsByDayFromFullMoon.put(day, new ResultObject());
         }
 
         InputStream is = Main.class.getClassLoader().getResourceAsStream("birthsByDate.csv");
@@ -51,8 +64,22 @@ public class Main {
                         continue;
                     }
 
-                    int nbBirthForDaysFromFullMoon = birthsByDayFromFullMoon.get(daysFromFullMoon);
-                    birthsByDayFromFullMoon.put(daysFromFullMoon, nbBirthForDaysFromFullMoon + nbBirthAtThisDate);
+                    ResultObject resultObject = birthsByDayFromFullMoon.get(daysFromFullMoon);
+                    resultObject.addBirths(nbBirthAtThisDate);
+                    resultObject.incDays();
+                    
+                    if(DayOfWeek.SATURDAY.equals(date.getDayOfWeek())) {
+                    	resultObject.incSaturdays();
+                    }
+                    
+                    if(DayOfWeek.SUNDAY.equals(date.getDayOfWeek())) {
+                    	resultObject.incSundays();
+                    }
+                    
+                    if(publicHolidays.containsKey(date)) {
+                    	resultObject.incPublicHolidays();
+                    }
+                    	
                 } catch (NumberFormatException e) {
                     System.out.println("nbBirthString = '" + nbBirthString + "'");
                     e.printStackTrace();
@@ -119,12 +146,41 @@ public class Main {
         }
     }
 
-    private static void showResult(Map<Integer,Integer> birthFromFullMoon) {
-        System.out.println("Days from Full moon,Births");
+    private static void showResult(Map<Integer,ResultObject> birthFromFullMoon) {
+        System.out.println("Days from Full moon,Births,Days,Saturdays,Sundays,Public holidays");
         
         for(int day=MIN_DAY_FROM_FULL_MOON; day<=MAX_DAY_FROM_FULL_MOON; day++) {
-        	Integer value = birthFromFullMoon.get(day);
-        	System.out.println(day + "," + value);
+        	ResultObject resultObject = birthFromFullMoon.get(day);
+        	System.out.print(day + ",");
+        	System.out.print(resultObject.getBirths() + ",");
+        	System.out.print(resultObject.getDays() + ",");
+        	System.out.print(resultObject.getSaturdays() + ",");
+        	System.out.print(resultObject.getSundays() + ",");
+        	System.out.print(resultObject.getPublicHolidays());
+        	
+        	System.out.println();
         }
+    }
+    
+    private static void initializePublicHolidays() throws URISyntaxException, IOException {
+    	publicHolidays = new HashMap<>();
+    	
+		// read csv with public holidays
+    	String filenamePublicHolidays = "publicHolidays.csv";
+		Path path = Paths.get(Main.class.getClassLoader().getResource(filenamePublicHolidays).toURI());
+		
+		// for each public holiday
+		for (String line : Files.readAllLines(path, StandardCharsets.UTF_8)) {
+			// skip header line
+			if (line.startsWith("date")) {
+				continue;
+			}
+			
+			String[] columns = line.split(",");
+			LocalDate publicHolidayDate = getDateFromIsoString(columns[0]);
+			
+			publicHolidays.put(publicHolidayDate, Boolean.TRUE);
+		}
+
     }
 }
