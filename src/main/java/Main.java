@@ -70,13 +70,9 @@ public class Main {
                     
                     if(DayOfWeek.SATURDAY.equals(date.getDayOfWeek())) {
                     	resultObject.incSaturdays();
-                    }
-                    
-                    if(DayOfWeek.SUNDAY.equals(date.getDayOfWeek())) {
+                    } else  if(DayOfWeek.SUNDAY.equals(date.getDayOfWeek())) {
                     	resultObject.incSundays();
-                    }
-                    
-                    if(publicHolidays.containsKey(date)) {
+                    } else if(publicHolidays.containsKey(date)) {
                     	resultObject.incPublicHolidays();
                     }
                     	
