@@ -167,7 +167,7 @@ public class Analysis {
 	}
 	
 	/**
-	 * Calculate the number of births when a public holiday occurs.
+	 * Calculate the number of births when a public holiday occurs (and it is not a saturday or sunday).
 	 * Print the result in the console.
 	 * 
 	 * @param birthsByDay List of births by day
@@ -191,11 +191,14 @@ public class Analysis {
 			
 			String[] columns = line.split(",");
 			LocalDate publicHolidayDate = parseDateIso8601(columns[0]);
+			DayOfWeek dayOfWeek = publicHolidayDate.getDayOfWeek();
 			
-			int births = birthsByDayMap.get(publicHolidayDate);
-			
-			numberOfPublicHolidays++;
-			totalBirths += births;
+			if(!DayOfWeek.SATURDAY.equals(dayOfWeek) && !DayOfWeek.SUNDAY.equals(dayOfWeek)) {
+				int births = birthsByDayMap.get(publicHolidayDate);
+				
+				numberOfPublicHolidays++;
+				totalBirths += births;
+			}
 		}
 		
 		int averageBirth = totalBirths/numberOfPublicHolidays;
