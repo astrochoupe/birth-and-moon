@@ -91,6 +91,11 @@ public class Main {
         }
 
         showResult(birthsByDayFromFullMoon);
+        
+        //publicHolidayByDaysFromFullMoon("Jour de l'an");
+        publicHolidayByDaysFromFullMoon("Lundi de Pâques");
+        //publicHolidayByDaysFromFullMoon("Ascension");
+        //publicHolidayByDaysFromFullMoon("Lundi de Pentecôte");
     }
 
     private static LocalDate getDateFromIsoString(String dateIso) {
@@ -195,5 +200,44 @@ public class Main {
 			publicHolidays.put(publicHolidayDate, Boolean.TRUE);
 		}
 
+    }
+    
+    private static void publicHolidayByDaysFromFullMoon(String publicHoliday) throws URISyntaxException, IOException {
+    	
+        // initialize result map
+        Map<Integer,Integer> numberOfPublicHolidayForADayFromFullMoon = new HashMap<>();
+        for(int day=MIN_DAY_FROM_FULL_MOON; day<=MAX_DAY_FROM_FULL_MOON; day++) {
+            numberOfPublicHolidayForADayFromFullMoon.put(day, 0);
+        }
+    	
+		// read csv with public holidays
+		Path path = Paths.get(Main.class.getClassLoader().getResource(FILENAME_PUBLIC_HOLIDAYS).toURI());
+		
+		// for each public holiday
+		for (String line : Files.readAllLines(path, StandardCharsets.UTF_8)) {
+			// skip header line
+			if (line.startsWith("date")) {
+				continue;
+			}
+			
+			String[] columns = line.split(",");
+			LocalDate publicHolidayDate = getDateFromIsoString(columns[0]);
+			String publicHolidayName = columns[1];
+			
+			// if the public holiday is the one we search
+			if(publicHoliday.equals(publicHolidayName)) {
+				int daysFromFullMoon = getDaysFromFullMoon(publicHolidayDate);
+				int nb = numberOfPublicHolidayForADayFromFullMoon.get(daysFromFullMoon);
+				numberOfPublicHolidayForADayFromFullMoon.put(daysFromFullMoon, ++nb);
+			}
+		}
+		
+		System.out.println();
+		System.out.println("When occurs " + publicHoliday);
+		// print result
+        for(int day=MIN_DAY_FROM_FULL_MOON; day<=MAX_DAY_FROM_FULL_MOON; day++) {
+            int nb = numberOfPublicHolidayForADayFromFullMoon.get(day);
+            System.out.println(day + " = " + nb);
+        }
     }
 }
