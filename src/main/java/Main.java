@@ -42,7 +42,7 @@ public class Main {
 
         InputStream is = Main.class.getClassLoader().getResourceAsStream("birthsByDate.csv");
 
-        try (BufferedReader br = new BufferedReader(new InputStreamReader(is))){
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
             // skip header line
             br.readLine();
 
@@ -143,19 +143,56 @@ public class Main {
     }
 
     private static void showResult(Map<Integer,ResultObject> birthFromFullMoon) {
-        System.out.println("Days from Full moon,Births,Days,Saturdays,Sundays,Public holidays");
+        System.out.println("Days from Full moon,Births,Days,Saturdays,Sundays,Public holidays,Avg births by day,Std dév");
         
         for(int day=MIN_DAY_FROM_FULL_MOON; day<=MAX_DAY_FROM_FULL_MOON; day++) {
         	ResultObject resultObject = birthFromFullMoon.get(day);
+        	
+        	int births = resultObject.getBirths();
+        	int days = resultObject.getDays();
+
         	System.out.print(day + ",");
-        	System.out.print(resultObject.getBirths() + ",");
-        	System.out.print(resultObject.getDays() + ",");
+        	System.out.print(births + ",");
+        	System.out.print(days + ",");
         	System.out.print(resultObject.getSaturdays() + ",");
         	System.out.print(resultObject.getSundays() + ",");
-        	System.out.print(resultObject.getPublicHolidays());
+        	System.out.print(resultObject.getPublicHolidays() + ",");
         	
-        	System.out.println();
+        	if(days != 0) {
+        		double doubleBirths = (double) births;
+        		double avg = (double) births/days;
+        		double stdDev = stdDev(resultObject.getArrayBirths(), avg, days);
+        		
+        		System.out.print(Math.round(avg) + ",");
+        		System.out.println(Math.round(stdDev));
+        		
+        	} else {
+        		System.out.println("N/A,N/A");
+        	}
+        	
         }
+    }
+    
+    /**
+     * Calculate the standard deviation of an array of int.
+     * 
+     * @param array An array of int
+     * @return The standard deviation
+     */
+    private static double stdDev(int[] array, double avg, int nbItems) {
+    	double sum = 0;
+    	
+    	
+        for (int i = 0; i < array.length; i++) {
+        	if(array[i] != 0) {
+				double difference = array[i] - avg;
+				double square = difference * difference;
+				sum += square;
+        	}
+		}
+        
+        double variance = sum / nbItems;
+        return Math.sqrt(variance);
     }
     
     private static void initializePublicHolidays() throws URISyntaxException, IOException {

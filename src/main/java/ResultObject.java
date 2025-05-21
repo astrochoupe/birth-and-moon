@@ -5,6 +5,8 @@ public class ResultObject {
 	private int saturdays = 0;
 	private int sundays = 0;
 	private int publicHolidays = 0;
+	private int[] arrayBirths = new int[1000];
+	private int arrayPosition = 0;
 
 	public int getBirths() {
 		return births;
@@ -12,6 +14,7 @@ public class ResultObject {
 
 	public void addBirths(int births) {
 		this.births += births;
+		arrayBirths[arrayPosition++] = births;
 	}
 	
 	public int getDays() {
@@ -44,6 +47,10 @@ public class ResultObject {
 
 	public void incPublicHolidays() {
 		this.publicHolidays++;
+	}
+
+	public int[] getArrayBirths() {
+		return arrayBirths;
 	}
 
 }
