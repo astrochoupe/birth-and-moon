@@ -27,15 +27,14 @@ public class Analysis {
 	 * @throws IOException 
 	 */
 	public static void main(String[] args) throws URISyntaxException, IOException {
-		String filenameBirthsByDate = "birthsByDate.csv";
-		String filenamePublicHolidays = "publicHolidays.csv";
-		List<Births4Day> birthsByDay = readCsvBirthByDate(filenameBirthsByDate);
-		Map<LocalDate, Integer> birthsByDayMap = csvBirthByDateToMap(filenameBirthsByDate);
+		
+		List<Births4Day> birthsByDay = readCsvBirthByDate(Main.FILENAME_BIRTHS_BY_DATE);
+		Map<LocalDate, Integer> birthsByDayMap = csvBirthByDateToMap(Main.FILENAME_BIRTHS_BY_DATE);
 		
 		birthsByDayOfWeek(birthsByDay);
 		birthsByMonth(birthsByDay);
 		birthsByYear(birthsByDay);
-		birthsWhenPublicHolidays(birthsByDayMap, filenamePublicHolidays);
+		birthsWhenPublicHolidays(birthsByDayMap, Main.FILENAME_PUBLIC_HOLIDAYS);
 		averageBirthsByDayOfWeek(birthsByDay);
 	}
 

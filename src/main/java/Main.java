@@ -23,6 +23,10 @@ public class Main {
     
     private static int MIN_DAY_FROM_FULL_MOON = -15;
     private static int MAX_DAY_FROM_FULL_MOON = 15;
+    
+    static String FILENAME_BIRTHS_BY_DATE = "birthsByDate.csv";
+    static String FILENAME_MOON_PHASES = "moonPhases.csv";
+    static String FILENAME_PUBLIC_HOLIDAYS = "publicHolidays.csv";
 
     /**
      * Give the number of births by days from Full moon.
@@ -40,7 +44,7 @@ public class Main {
             birthsByDayFromFullMoon.put(day, new ResultObject());
         }
 
-        InputStream is = Main.class.getClassLoader().getResourceAsStream("birthsByDate.csv");
+        InputStream is = Main.class.getClassLoader().getResourceAsStream(FILENAME_BIRTHS_BY_DATE);
 
         try (BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
             // skip header line
@@ -109,7 +113,7 @@ public class Main {
     private static void initDaysFromFullMoon() {
     	daysFromFullMoonForADate = new HashMap<>();
 
-        InputStream is = Main.class.getClassLoader().getResourceAsStream("moonPhases.csv");
+        InputStream is = Main.class.getClassLoader().getResourceAsStream(FILENAME_MOON_PHASES);
 
         // note: phases are in french abbreviation
         // NL = Nouvelle Lune (New Moon)
@@ -198,8 +202,7 @@ public class Main {
     	publicHolidays = new HashMap<>();
     	
 		// read csv with public holidays
-    	String filenamePublicHolidays = "publicHolidays.csv";
-		Path path = Paths.get(Main.class.getClassLoader().getResource(filenamePublicHolidays).toURI());
+		Path path = Paths.get(Main.class.getClassLoader().getResource(FILENAME_PUBLIC_HOLIDAYS).toURI());
 		
 		// for each public holiday
 		for (String line : Files.readAllLines(path, StandardCharsets.UTF_8)) {
