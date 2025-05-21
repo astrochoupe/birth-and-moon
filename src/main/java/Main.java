@@ -159,7 +159,6 @@ public class Main {
         	System.out.print(resultObject.getPublicHolidays() + ",");
         	
         	if(days != 0) {
-        		double doubleBirths = (double) births;
         		double avg = (double) births/days;
         		double stdDev = stdDev(resultObject.getArrayBirths(), avg, days);
         		
