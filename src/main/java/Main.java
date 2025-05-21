@@ -164,7 +164,7 @@ public class Main {
         	
         	if(days != 0) {
         		double avg = (double) births/days;
-        		double stdDev = stdDev(resultObject.getArrayBirths(), avg, days);
+        		double stdDev = Statistics.stdDev(resultObject.getArrayBirths(), avg, days);
         		
         		System.out.print(Math.round(avg) + ",");
         		System.out.println(Math.round(stdDev));
@@ -174,28 +174,6 @@ public class Main {
         	}
         	
         }
-    }
-    
-    /**
-     * Calculate the standard deviation of an array of int.
-     * 
-     * @param array An array of int
-     * @return The standard deviation
-     */
-    private static double stdDev(int[] array, double avg, int nbItems) {
-    	double sum = 0;
-    	
-    	
-        for (int i = 0; i < array.length; i++) {
-        	if(array[i] != 0) {
-				double difference = array[i] - avg;
-				double square = difference * difference;
-				sum += square;
-        	}
-		}
-        
-        double variance = sum / nbItems;
-        return Math.sqrt(variance);
     }
     
     private static void initializePublicHolidays() throws URISyntaxException, IOException {
